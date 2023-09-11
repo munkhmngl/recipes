@@ -9,7 +9,7 @@ export default class Search{
          this.result= result.data.data.recipes;
          return this.result;
       }catch(error){
-         alert(`Асуудал гарлаа: ${error.message}`);
+         console.log(`Асуудал гарлаа: ${error.message}`);
       }
    }
 };
