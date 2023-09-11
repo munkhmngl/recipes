@@ -7,10 +7,10 @@ module.exports = {
    entry: './src/js/index.js',
    output: {
       filename: 'js/index.js',
-      path: path.resolve(__dirname, 'dist')
+      path: path.resolve(__dirname, 'docs')
    },
    devServer: {
-      static: './dist'
+      static: './docs'
    },
    plugins: [
       new HtmlWebpackPlugin({
