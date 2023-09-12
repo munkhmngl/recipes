@@ -3,9 +3,9 @@ import { elements } from "./base";
 const renderRecipe = recipe => {
    const markup = `
    <li>
-      <a class="results__link results__link--active" href="${recipe.id}">
+      <a class="results__link" href="${recipe.id}">
          <figure class="results__fig">
-            <img src=${recipe.image_url}>
+            <img src=${recipe.image_url} alt=${recipe.title}>
          </figure>
          <div class="results__data">
             <h4 class="results__name">${recipe.title}</h4>
@@ -20,6 +20,4 @@ const renderRecipe = recipe => {
 export const clearSearchQuery = () => elements.searchInput.value = '';
 export const clearSearchResult = () => elements.searchResultList.innerHTML = '';
 export const getInput = () => elements.searchInput.value;
-export const renderRecipes = recipes => {
-   recipes.forEach(el => renderRecipe(el));
-}
+export const renderRecipes = recipes => recipes.forEach(el => renderRecipe(el));

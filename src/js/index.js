@@ -1,5 +1,5 @@
 import Search from './model/search';
-import { elements } from './view/base';
+import { elements, renderLoader, clearLoader } from './view/base';
 import * as searchView from './view/searchView';
 // Web app төлөв
 // Хайлтын quety, үр дүн
@@ -17,9 +17,11 @@ const controlSearch = async () => {
       // 3) хайлт хийхэд зориулж дэлгэцийг UI бэлтгэнэ
       searchView.clearSearchQuery();
       searchView.clearSearchResult();
+      renderLoader(elements.searchResultDiv);
       // 4) хайлтыг гүйцэтгэнэ
       await state.search.doSearch(query);
       // 5) хайлтын үр дүнг дэлгэцэнд үзүүлнэ
+      clearLoader();
       if(state.search.result === undefined) alert('Хайлтаар илэрцгүй...');
       else searchView.renderRecipes(state.search.result);
    }
