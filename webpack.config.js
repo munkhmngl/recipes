@@ -9,6 +9,7 @@ module.exports = {
       filename: 'js/index.js',
       path: path.resolve(__dirname, 'docs')
    },
+   devtool: 'inline-source-map',
    devServer: {
       static: './docs'
    },

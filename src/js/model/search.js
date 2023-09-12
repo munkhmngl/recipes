@@ -5,7 +5,7 @@ export default class Search{
    }
    async doSearch(){
       try {
-         let result = await axios(`https://forkify-api.herokuapp.com/api/v2/recipes?search=${this.query}`);
+         let result = await axios(`https://forkify-api.herokuapp.com/api/v2/recipes/${this.query}`);
          this.result= result.data.data.recipes;
          return this.result;
       }catch(error){

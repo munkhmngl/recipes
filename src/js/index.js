@@ -1,6 +1,7 @@
 import Search from './model/search';
 import { elements, renderLoader, clearLoader } from './view/base';
 import * as searchView from './view/searchView';
+import Recipe from './model/Recipe';
 // Web app төлөв
 // Хайлтын quety, үр дүн
 // Тухайн үзүүлж байгаа жор
@@ -31,3 +32,15 @@ elements.searchForm.addEventListener('submit', e => {
    e.preventDefault();
    controlSearch();
 });
+
+elements.pageButtons.addEventListener('click', e => {
+   const btn = e.target.closest('.btn-inline');
+   if(btn){
+      const goto = parseInt(btn.dataset.goto, 10);
+      searchView.clearSearchResult();
+      searchView.renderRecipes(state.search.result, goto);
+   }
+});
+
+const r = new Recipe('5ed6604591c37cdc054bc886');
+r.getRecipe();
