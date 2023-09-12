@@ -6,7 +6,10 @@ export const clearRecipe = () => {
 }
 
 export const selectedRecipe = id => {
-   document.querySelector(`a[href*='${id}']`).classList.add('results__link--active');
+   const arr = Array.from(document.querySelectorAll('.results__link'));
+   arr.forEach(el => el.classList.remove('results__link--active'));
+   const domObj = document.querySelector(`a[href*="${id}"]`);
+   if(domObj) domObj.classList.add('results__link--active');
 };
 
 const renderData = el => {
