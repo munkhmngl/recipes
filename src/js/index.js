@@ -2,6 +2,7 @@ import Search from './model/search';
 import { elements, renderLoader, clearLoader } from './view/base';
 import * as searchView from './view/searchView';
 import Recipe from './model/Recipe';
+import { renderRecipe, clearRecipe, selectedRecipe } from './view/recipeView';
 // Web app төлөв
 // Хайлтын quety, үр дүн
 // Тухайн үзүүлж байгаа жор
@@ -42,5 +43,22 @@ elements.pageButtons.addEventListener('click', e => {
    }
 });
 
-const r = new Recipe('5ed6604591c37cdc054bc886');
-r.getRecipe();
+// Жорын контроллер
+const controlRecipe = async () => {
+   // 1) URL-аас ID-ийг салгаж авах
+   const url = window.location.hash.replace('#', '');
+   // 2) Жорын моделийг үүсгэж өгнө
+   state.recipe = new Recipe(url);
+   // 3) UI дэлгэцийг бэлтгэнэ
+   clearRecipe();
+   renderLoader(elements.resipeDiv);
+   selectedRecipe(url);
+   // 4) Жороо татаж авчирна
+   await state.recipe.getRecipe();
+   // 5) Жорыг гүйцэтгэх хугацаа болон орцыг тооцоолно
+   clearLoader();
+   // 6) Жороо дэлгэцэнд гаргана
+   renderRecipe(state.recipe);
+}
+window.addEventListener('hashchange', controlRecipe);
+window.addEventListener('load', controlRecipe);
