@@ -15,4 +15,9 @@ export const renderItem = item => {
 
 export const clearItems = () => {
    elements.shoppingList.innerHTML = '';
+};
+
+export const deleteItem = id => {
+   const item = document.querySelector(`[data-itemid="${id}"]`);
+   item.parentElement.removeChild(item);
 }
