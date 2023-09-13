@@ -2,7 +2,10 @@ import Search from './model/search';
 import { elements, renderLoader, clearLoader } from './view/base';
 import * as searchView from './view/searchView';
 import Recipe from './model/Recipe';
+import List from './model/List';
+import * as listView from './view/listView';
 import { renderRecipe, clearRecipe, selectedRecipe } from './view/recipeView';
+
 // Web app төлөв
 // Хайлтын quety, үр дүн
 // Тухайн үзүүлж байгаа жор
@@ -10,6 +13,7 @@ import { renderRecipe, clearRecipe, selectedRecipe } from './view/recipeView';
 // Захиалж байгаа жорын найрлаганууд
 const state = {};
 
+// хайлтын контроллер
 const controlSearch = async () => {
    // 1) Вэбээс хайлтын түлхүүр үгийг гаргаж авна
    const query = searchView.getInput();
@@ -27,7 +31,7 @@ const controlSearch = async () => {
       if(state.search.result === undefined) alert('Хайлтаар илэрцгүй...');
       else searchView.renderRecipes(state.search.result);
    }
-}
+};
 
 elements.searchForm.addEventListener('submit', e => {
    e.preventDefault();
@@ -47,18 +51,52 @@ elements.pageButtons.addEventListener('click', e => {
 const controlRecipe = async () => {
    // 1) URL-аас ID-ийг салгаж авах
    const url = window.location.hash.replace('#', '');
-   // 2) Жорын моделийг үүсгэж өгнө
-   state.recipe = new Recipe(url);
-   // 3) UI дэлгэцийг бэлтгэнэ
-   clearRecipe();
-   renderLoader(elements.resipeDiv);
-   selectedRecipe(url);
-   // 4) Жороо татаж авчирна
-   await state.recipe.getRecipe();
-   // 5) Жорыг гүйцэтгэх хугацаа болон орцыг тооцоолно
-   clearLoader();
-   // 6) Жороо дэлгэцэнд гаргана
-   renderRecipe(state.recipe);
-}
-window.addEventListener('hashchange', controlRecipe);
-window.addEventListener('load', controlRecipe);
+   // id байгаа эсэхийг шалгах
+   if(url){
+      // 2) Жорын моделийг үүсгэж өгнө
+      state.recipe = new Recipe(url);
+      // 3) UI дэлгэцийг бэлтгэнэ
+      clearRecipe();
+      renderLoader(elements.resipeDiv);
+      selectedRecipe(url);
+      // 4) Жороо татаж авчирна
+      await state.recipe.getRecipe();
+      // 5) Жорыг гүйцэтгэх хугацаа болон орцыг тооцоолно
+      clearLoader();
+      // 6) Жороо дэлгэцэнд гаргана
+      renderRecipe(state.recipe);
+   }
+};
+
+['hashchange', 'load'].forEach(e => window.addEventListener(e, controlRecipe));
+
+// Найрлаганы контроллер
+const controlList = () => {
+   try {
+      // найрлаганы моделийг үүсгнэ
+      state.list = new List();
+      window.tt = state.list;
+      // Өмнө харагдаж байсан найрлагануудыг дэлгэцнээс арилгана
+      listView.clearItems();
+      // Уг модел рүү одоо харагдаж байгаа жорны бүх найрлагыг авч хийнэ
+      state.recipe.ingredients.forEach(e => {
+         const item = state.list.addItem(e);
+         listView.renderItem(item);
+      });
+   }catch(e) {
+      console.log(e.message);
+   }
+};
+
+elements.resipeDiv.addEventListener('click', e => {
+   if(e.target.matches(".recipe__btn, .recipe__btn *")){
+      controlList();
+   }
+});
+elements.shoppingList.addEventListener('click', e => {
+   // Клик хийсэн li элементийн data-itemid аттрибутыг шүүж гаргаж авах
+   const id = e.target.closest('.shopping__item').dataset.itemid;
+   // Олдсон ID-тай орцыг моделоос устгана
+   state.list.deleteItem(id);
+   // Дэлгэцээс ийм id-тай орцыг олж бас устгана
+});

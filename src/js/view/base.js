@@ -4,8 +4,8 @@ export const elements = {
    searchResultDiv: document.querySelector('.results'),
    searchResultList: document.querySelector('.results__list'),
    pageButtons: document.querySelector('.results__pages'),
-   viewRecipe: document.querySelector('.results__link'),
-   resipeDiv: document.querySelector('.recipe')
+   resipeDiv: document.querySelector('.recipe'),
+   shoppingList: document.querySelector('.shopping__list')
 };
 
 export const elementStrings = {
@@ -23,6 +23,7 @@ export const renderLoader = parent => {
       <svg>
          <use href="img/icons.svg#icon-cw"></use>
       </svg>
-   </div>`;
-   parent.insertAdjacentHTML('afterbegin', loader); 
+   </div>
+   `;
+   parent.insertAdjacentHTML('afterbegin', loader);
 };

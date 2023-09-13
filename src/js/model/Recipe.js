@@ -19,5 +19,4 @@ export default class Recipe {
          console.log(`Алдаа гарлаа: ${e.message}`);
       }
    }
-
-}
+};

@@ -12,33 +12,18 @@ export const selectedRecipe = id => {
    if(domObj) domObj.classList.add('results__link--active');
 };
 
-const renderData = el => {
-   if(el.quantity !== null){
-      return `
-      <li class="recipe__item">
-         <svg class="recipe__icon">
-            <use href="img/icons.svg#icon-check"></use>
-         </svg>
-         <div class="recipe__count">${el.quantity}</div>
-         <div class="recipe__ingredient">
-            <span class="recipe__unit">${el.unit}</span>
-            ${el.description}
-         </div>
-      </li>`
-   } else {
-      return `
-      <li class="recipe__item">
-         <svg class="recipe__icon">
-            <use href="img/icons.svg#icon-check"></use>
-         </svg>
-         <div class="recipe__count"></div>
-         <div class="recipe__ingredient">
-            <span class="recipe__unit">${el.unit}</span>
-            ${el.description}
-         </div>
-      </li>`
-   }
-}
+const renderData = el => `
+<li class="recipe__item">
+   <svg class="recipe__icon">
+      <use href="img/icons.svg#icon-check"></use>
+   </svg>
+   <div class="recipe__count">${el.quantity}</div>
+   <div class="recipe__ingredient">
+      <span class="recipe__unit">${el.unit}</span>
+         ${el.description}
+   </div>
+</li>`;
+
 
 export const renderRecipe = recipe => {
    // Энэ жорыг дэлгэцэнд гаргаж үзүүлнэ
@@ -84,7 +69,7 @@ export const renderRecipe = recipe => {
          </div>
          <div class="recipe__ingredients">
             <ul class="recipe__ingredient-list">
-               ${recipe.ingredients.map(el => renderData(el)).join(' ')}
+               ${recipe.ingredients.map(el => renderData(el)).join(" ")}
             </ul>
             <button class="btn-small recipe__btn">
                <svg class="search__icon">

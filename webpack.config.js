@@ -2,8 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-   mode: 'development',
-   // mode: 'production',
+   // mode: 'development',
+   mode: 'production',
    entry: './src/js/index.js',
    output: {
       filename: 'js/index.js',
@@ -28,7 +28,7 @@ module.exports = {
                loader: 'babel-loader',
                options: {
                   presets: [
-                     ['@babel/preset-env', { targets: "defaults" }]
+                     ['@babel/preset-env']
                   ]
                }
             }
