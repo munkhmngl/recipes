@@ -1,7 +1,8 @@
+require("@babel/polyfill");
 import Search from './model/search';
 import { elements, renderLoader, clearLoader } from './view/base';
-import * as searchView from './view/searchView';
 import Recipe from './model/Recipe';
+import * as searchView from './view/searchView';
 import List from './model/List';
 import * as listView from './view/listView';
 import Like from './model/like';
@@ -66,11 +67,19 @@ const controlRecipe = async () => {
       // 5) Жорыг гүйцэтгэх хугацаа болон орцыг тооцоолно
       clearLoader();
       // 6) Жороо дэлгэцэнд гаргана
-      renderRecipe(state.recipe);
+      renderRecipe(state.recipe, state.likes.isLiked(url));
    }
 };
 
 ['hashchange', 'load'].forEach(e => window.addEventListener(e, controlRecipe));
+window.addEventListener('load', e => {
+   // шинээр лайк моделийг апп дөнгөж ачаалагдахад үүсгэнэ
+   if(!state.likes) state.likes = new Like();
+   // Лайк цэсийг хаах
+   likesView.toggleLikeMenu(state.likes.getNumberOfLikes());
+   // лайкууд байвал тэдгээрийг цэсэнд нэмж харуулна
+   state.likes.likes.forEach(e => likesView.renderLike(like));
+});
 
 // Найрлаганы контроллер
 const controlList = () => {
@@ -99,13 +108,19 @@ const controlLike = () => {
    if(state.likes.isLiked(currentRecipeId)){
       // 4) лайкласан бол лайкийг нь болиулна
       state.likes.deleteLike(currentRecipeId);
+      // лайкын цэснээс устгана
+      likesView.deleteLike(currentRecipeId);
+      // лайк товчны лайкласан төлөвлийг болиулах
       likesView.toggleLikeBtn(false);
    } else {
       // 5) лайклаагйү бол лайклана
-      state.likes.addLike(currentRecipeId, state.recipe.title, state.recipe.publisher, state.recipe.image);
+      const newLike = state.likes.addLike(currentRecipeId, state.recipe.title, state.recipe.publisher, state.recipe.image);
+      // Лайк цэсэнд энэ лайкыг оруулах
+      likesView.renderLike(newLike);
+      // лайк товчны лайкласан төлөвт оруулах
       likesView.toggleLikeBtn(true);
    }
-   console.log(state.likes);
+   likesView.toggleLikeMenu(state.likes.getNumberOfLikes());
 };
 
 elements.resipeDiv.addEventListener('click', e => {

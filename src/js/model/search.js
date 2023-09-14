@@ -1,3 +1,4 @@
+require("@babel/polyfill");
 import axios from "axios";
 
 export default class Search{
